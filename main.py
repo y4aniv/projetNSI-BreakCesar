@@ -176,12 +176,13 @@ st.write("## Démonstration")
 ## Choix de la langue et du fichier
 langue = st.selectbox("Choisissez une langue", ("Français", "Anglais", "Allemand", "Espagnol", "Portugais", "Italien", "Turc", "Suédois", "Polonais", "Néerlandais", "Danois", "Islandais", "Finnois", "Tchèque", "Lituanien"))
 fichier_chiffre = st.file_uploader("Choisissez un fichier texte chiffré (.txt)", type=["txt"])
-demo_frLong = st.button("Demo en Français [925 caractères] > Clé de chiffrement : 5")
-demo_trLong = st.button("Demo en Turc [710 caractères] > Clé de chiffrement : 18")
-demo_enCourt = st.button("Demo en Anglais [29 caractères] > Clé de chiffrement : 1")
+demo_frLong = st.button("Test en Français [925 caractères] > Clé de chiffrement : 5")
+demo_trLong = st.button("Test en Turc [710 caractères] > Clé de chiffrement : 18")
+demo_enCourt = st.button("Test en Anglais [29 caractères] > Clé de chiffrement : 1")
+demo_frAsLt = st.button("Test d'un texte en Français déchiffré en Lituanien [925 caractères] > Clé de chiffrement : 5")
 
 ## Si le fichier est bien un fichier texte
-if fichier_chiffre is not None or demo_frLong or demo_trLong or demo_enCourt:
+if fichier_chiffre is not None or demo_frLong or demo_trLong or demo_enCourt or demo_frAsLt:
 
     ## On récupère le contenu du fichier en fonction du choix de l'utilisateur
     if demo_frLong:
@@ -193,6 +194,9 @@ if fichier_chiffre is not None or demo_frLong or demo_trLong or demo_enCourt:
     elif demo_enCourt:
         donnees_crypter = "Ifmmp Xpsme! J'n Cpoe, Kbnft Cpoe."
         langue = "Anglais"
+    elif demo_frAsLt:
+        donnees_crypter = "Jqqj jsatnj qj rfszxhwny à Xnrtsj ij Gjfzatnw vzn xtzynjsy xf uzgqnhfynts fzc Éinyntsx Lfqqnrfwi. Zsj htwwjxutsifshj x'éyfgqny jsywj jqqjx à qf kns ijx fsséjx 1960. Jqqj qzn jcuwnrj fnsxn xjx jxuéwfshjx jy xjx fyyjsyjx anx-à-anx i'zsj uzgqnhfynts ufw Lfqqnrfwi, zsj rfnxts i'éinynts à qf stytwnéyé nsyjwsfyntsfqj : « Xn atzx xfanje hj vzj o'fyyjsix ij hjyyj uzgqnhfynts ! Qf wzuyzwj fajh zsj anj ij wtzynsj jy ij wéxnlsfynts, qf kznyj js ufdx éywfsljw, q'nsiéujsifshj ufw qj ywfafnq. Atzx atdje vz'nq sj x'flny ufx xnruqjrjsy utzw rtn i'zsj xnruqj vzjxynts ij afsnyé. Utzw tgyjsnw q'fzytwnxfynts ij xtwynj, nq stzx kfzy i'fgtwi zsj fzytwnxfynts rfwnyfqj, uznx zsj fzywj tkknhnjqqj. », éhwny-jqqj ifsx zs htzwwnjw ifyé iz 23 iéhjrgwj 196722. Uznx ifsx zs fzywj htzwwnjw, ifyé hjyyj ktnx iz 5 ofsanjw 1968, jqqj éhwny jshtwj : « Oj hwfnsx gjfzhtzu ij s'fatnw ufx fxxje i'fwljsy inxutsngqj utzw atdfljw ozxvz'à Ufwnx. Oj htruyfnx ozxyjrjsy xzw zsj fafshj ij Lfqqnrfwi utzw qj kfnwj. Rts rfwn utzwwfny r'fnijw rfnx oj sj qj ajzc ufx. Stzx sj xtrrjx ufx js ywèx gtsx yjwrjx jy oj anx à xjx hwthmjyx ijuznx ansly fsx"
+        langue = "Lituanien"
     elif fichier_chiffre:
 
         ## On récupère le contenu du fichier et on le décode en UTF-8
@@ -210,7 +214,7 @@ if fichier_chiffre is not None or demo_frLong or demo_trLong or demo_enCourt:
     st.write("## Informations")
     diff = abs(difference_caracteres(caractere_plus_frequent(analyse_frequence(donnees_crypter)), freq_lang[langue]))
 
-    ## On affiche la lettre la plus fréquente de la langue choisie
+    ## On affiche la lettre la plus fréquente de la langue choisie et la transformation de la lettre la plus fréquente de la langue choisie après chiffrement
     st.info(f"La lettre la plus fréquente en **{langue}** est **{freq_lang[langue].upper()}**")
     st.info(f"Avec une clé de **{diff}**, la lettre **{freq_lang[langue].upper()}** devient **{caractere_plus_frequent(analyse_frequence(donnees_crypter)).upper()}** après chiffrement")
 
