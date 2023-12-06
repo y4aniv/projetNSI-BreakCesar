@@ -111,15 +111,18 @@ def dechiffrer_cesar(texte, lang="Français"):
     ## Parcours du texte
     for caractere in texte:
         ## Conversion en minuscule
-        caractere = caractere.lower()
+        caractere_lower = caractere.lower()
         ## Si le caractère n'est pas une lettre, on l'ajoute au texte déchiffré
-        if caractere in "abcdefghijklmnopqrstuvwxyz":
+        if caractere_lower in "abcdefghijklmnopqrstuvwxyz":
             ## Calcul de la nouvelle position du caractère
-            pos = ord(caractere) - 97 ## On soustrait 97 pour obtenir la position dans l'alphabet car la table ASCII commence à 97 pour les minuscules
+            pos = ord(caractere_lower) - 97 ## On soustrait 97 pour obtenir la position dans l'alphabet car la table ASCII commence à 97 pour les minuscules
             ## Calcul de la nouvelle position du caractère
             nouvelle_pos = (pos + diff) % 26 ## On utilise le modulo 26 pour éviter de dépasser 26
             ## Conversion de la nouvelle position en caractère
             nouveau_caractere = chr(nouvelle_pos + 97) ## On ajoute 97 pour obtenir la position dans la table ASCII
+            ## Si le caractère était en majuscule, on le convertit
+            if caractere.isupper():
+                nouveau_caractere = nouveau_caractere.upper()
             ## Ajout du caractère au texte déchiffré
             texte_dechiffre += nouveau_caractere
         else:
