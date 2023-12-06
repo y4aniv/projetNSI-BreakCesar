@@ -1,6 +1,3 @@
-## BreakCesar
-## Auteur: Océanely TRUONG & Yaniv DOUIEB
-
 ## Importation des modules
 import streamlit as st
 
@@ -23,10 +20,10 @@ freq_lang = {
     "Lituanien": "i"
 }
 
-def freq_analyse(text):
+def analyse_frequence(texte):
     """
     Fonction qui analyse la fréquence des lettres dans un texte
-    :entrée -> text (str)
+    :entrée -> texte (str)
     :sortie -> freq (dict)
     """
 
@@ -34,27 +31,27 @@ def freq_analyse(text):
     freq = {}
 
     ## Parcours du texte
-    for c in text:
+    for caractere in texte:
 
-        ## Si la lettre est une majuscule, on la met en minuscule
-        c = c.lower()
+        ## Si le caractère est une majuscule, on le met en minuscule
+        caractere = caractere.lower()
 
-        ## Vérification que la lettre est bien une lettre de l'alphabet (a-z)
-        if c.isalpha() == False:
+        ## Vérification que le caractère est bien une lettre de l'alphabet (a-z)
+        if not caractere.isalpha():
 
-            ## Si ce n'est pas le cas, on passe à la lettre suivante
+            ## Si ce n'est pas le cas, on passe au caractère suivant
             continue
 
-        ## Si la lettre est déjà dans le dictionnaire, on ajoute 1 à sa fréquence
-        if c in freq:
-            freq[c] += 1
+        ## Si le caractère est déjà dans le dictionnaire, on ajoute 1 à sa fréquence
+        if caractere in freq:
+            freq[caractere] += 1
 
         ## Sinon, on l'ajoute au dictionnaire avec une fréquence de 1
         else:
-            freq[c] = 1
+            freq[caractere] = 1
     return freq
 
-def freq_prc(freq):
+def pourcentage_frequence(freq):
     """
     Fonction qui calcule la fréquence en pourcentage
     :entrée -> freq (dict)
@@ -65,20 +62,20 @@ def freq_prc(freq):
     total = 0
 
     ## Parcours du dictionnaire de fréquence
-    for c in freq:
+    for caractere in freq:
 
         ## Ajout de la fréquence au total
-        total += freq[c]
+        total += freq[caractere]
 
     ## Parcours du dictionnaire de fréquence
-    for c in freq:
+    for caractere in freq:
 
         ## Calcul de la fréquence en pourcentage
-        freq[c] = (freq[c] / total) * 100
+        freq[caractere] = (freq[caractere] / total) * 100
 
     return freq
 
-def max_char(freq):
+def caractere_plus_frequent(freq):
     """
     Fonction qui renvoie la lettre la plus fréquente dans un texte
     :entrée -> freq (dict)
@@ -86,83 +83,83 @@ def max_char(freq):
     """
 
     ## Initialisation de la lettre la plus fréquente
-    max = ""
+    max_caractere = ""
 
     ## Parcours du dictionnaire de fréquence
-    for c in freq:
+    for caractere in freq:
 
-        ## Si la lettre est plus fréquente que la lettre max, on la remplace
-        if max == "" or freq[c] > freq[max]:
-            max = c
+        ## Si le caractère est plus fréquent que le caractère max, on le remplace
+        if max_caractere == "" or freq[caractere] > freq[max_caractere]:
+            max_caractere = caractere
 
-    return max
+    return max_caractere
 
-def diff_char(char1, char2):
+def difference_caracteres(caractere1, caractere2):
     """
     Fonction qui calcule la différence entre deux lettres
-    :entrée -> char1 (str), char2 (str)
+    :entrée -> caractere1 (str), caractere2 (str)
     :sortie -> diff (int)
     """
 
-    ## On récupère la position de la lettre char1 dans l'alphabet
-    pos1 = ord(char1) - 97 ## 97 car 97 correspond à la lettre a en ASCII
+    ## On récupère la position du caractère caractere1 dans l'alphabet
+    pos1 = ord(caractere1) - 97 ## 97 car 97 correspond à la lettre a en ASCII
 
-    ## On récupère la position de la lettre char2 dans l'alphabet
-    pos2 = ord(char2) - 97 ## 97 car 97 correspond à la lettre a en ASCII
+    ## On récupère la position du caractère caractere2 dans l'alphabet
+    pos2 = ord(caractere2) - 97 ## 97 car 97 correspond à la lettre a en ASCII
 
     ## On calcule la différence entre les deux positions
     diff = pos2 - pos1
 
     return diff
 
-def break_cesar(text, lang="Français"):
+def dechiffrer_cesar(texte, lang="Français"):
     """
     Fonction qui casse un code César
-    :entrée -> text (str)
-    :sortie -> text (str)
+    :entrée -> texte (str)
+    :sortie -> texte (str)
     """
 
     ## On analyse la fréquence des lettres dans le texte
-    freq = freq_analyse(text)
+    freq = analyse_frequence(texte)
 
     ## On calcule la fréquence en pourcentage
-    freq = freq_prc(freq)
+    freq = pourcentage_frequence(freq)
 
     ## On récupère la lettre la plus fréquente
-    max = max_char(freq)
+    max_caractere = caractere_plus_frequent(freq)
 
-    ## On calcule la différence entre la lettre la plus fréquente et la lettre la plus frequente de chaque langage
-    diff = diff_char(max, freq_lang[lang])
+    ## On calcule la différence entre la lettre la plus fréquente et la lettre la plus fréquente de chaque langage
+    diff = difference_caracteres(max_caractere, freq_lang[lang])
 
     ## On initialise le texte déchiffré
-    text_dec = ""
+    texte_dechiffre = ""
 
     ## On parcourt le texte
-    for c in text:
+    for caractere in texte:
 
-        ## Si la lettre est une majuscule, on la met en minuscule
-        c = c.lower()
+        ## Si le caractère est une majuscule, on le met en minuscule
+        caractere = caractere.lower()
 
-        ## Si la lettre est une lettre de l'alphabet (a-z)
-        if c in "abcdefghijklmnopqrstuvwxyz":
+        ## Si le caractère est une lettre de l'alphabet (a-z)
+        if caractere in "abcdefghijklmnopqrstuvwxyz":
 
-            ## On récupère la position de la lettre dans l'alphabet
-            pos = ord(c) - 97 ## 97 car 97 correspond à la lettre a en ASCII
+            ## On récupère la position du caractère dans l'alphabet
+            pos = ord(caractere) - 97 ## 97 car 97 correspond à la lettre a en ASCII
 
-            ## On calcule la nouvelle position de la lettre
-            new_pos = (pos + diff) % 26
+            ## On calcule la nouvelle position du caractère
+            nouvelle_pos = (pos + diff) % 26
 
-            ## On calcule la nouvelle lettre
-            new_c = chr(new_pos + 97) ## 97 car 97 correspond à la lettre a en ASCII
+            ## On calcule le nouveau caractère
+            nouveau_caractere = chr(nouvelle_pos + 97) ## 97 car 97 correspond à la lettre a en ASCII
 
-            ## On ajoute la nouvelle lettre au texte déchiffré
-            text_dec += new_c
+            ## On ajoute le nouveau caractère au texte déchiffré
+            texte_dechiffre += nouveau_caractere
 
-        ## Sinon, on ajoute la lettre au texte déchiffré
+        ## Sinon, on ajoute le caractère au texte déchiffré
         else:
-            text_dec += c
+            texte_dechiffre += caractere
 
-    return text_dec
+    return texte_dechiffre
 
 ## Interface graphique
 
@@ -177,35 +174,54 @@ st.subheader("Déchiffrement automatique d'un code César")
 st.write("## Démonstration")
 
 ## Choix de la langue et du fichier
-lang = st.selectbox("Choisissez une langue", ("Français", "Anglais", "Allemand", "Espagnol", "Portugais", "Italien", "Turc", "Suédois", "Polonais", "Néerlandais", "Danois", "Islandais", "Finnois", "Tchèque", "Lituanien"))
-cryptedFile = st.file_uploader("Choisissez un fichier texte chiffré (.txt)", type=["txt"])
+langue = st.selectbox("Choisissez une langue", ("Français", "Anglais", "Allemand", "Espagnol", "Portugais", "Italien", "Turc", "Suédois", "Polonais", "Néerlandais", "Danois", "Islandais", "Finnois", "Tchèque", "Lituanien"))
+fichier_chiffre = st.file_uploader("Choisissez un fichier texte chiffré (.txt)", type=["txt"])
+demo_frLong = st.button("Demo en Français [925 caractères] > Clé de chiffrement : 5")
+demo_trLong = st.button("Demo en Turc [710 caractères] > Clé de chiffrement : 18")
+demo_enCourt = st.button("Demo en Anglais [29 caractères] > Clé de chiffrement : 1")
 
 ## Si le fichier est bien un fichier texte
-if cryptedFile is not None:
+if fichier_chiffre is not None or demo_frLong or demo_trLong or demo_enCourt:
 
-    ## On récupère le contenu du fichier
-    bytes_data = cryptedFile.getvalue()
+    ## On récupère le contenu du fichier en fonction du choix de l'utilisateur
+    if demo_frLong:
+        donnees_crypter = "Jqqj jsatnj qj rfszxhwny à Xnrtsj ij Gjfzatnw vzn xtzynjsy xf uzgqnhfynts fzc Éinyntsx Lfqqnrfwi. Zsj htwwjxutsifshj x'éyfgqny jsywj jqqjx à qf kns ijx fsséjx 1960. Jqqj qzn jcuwnrj fnsxn xjx jxuéwfshjx jy xjx fyyjsyjx anx-à-anx i'zsj uzgqnhfynts ufw Lfqqnrfwi, zsj rfnxts i'éinynts à qf stytwnéyé nsyjwsfyntsfqj : « Xn atzx xfanje hj vzj o'fyyjsix ij hjyyj uzgqnhfynts ! Qf wzuyzwj fajh zsj anj ij wtzynsj jy ij wéxnlsfynts, qf kznyj js ufdx éywfsljw, q'nsiéujsifshj ufw qj ywfafnq. Atzx atdje vz'nq sj x'flny ufx xnruqjrjsy utzw rtn i'zsj xnruqj vzjxynts ij afsnyé. Utzw tgyjsnw q'fzytwnxfynts ij xtwynj, nq stzx kfzy i'fgtwi zsj fzytwnxfynts rfwnyfqj, uznx zsj fzywj tkknhnjqqj. », éhwny-jqqj ifsx zs htzwwnjw ifyé iz 23 iéhjrgwj 196722. Uznx ifsx zs fzywj htzwwnjw, ifyé hjyyj ktnx iz 5 ofsanjw 1968, jqqj éhwny jshtwj : « Oj hwfnsx gjfzhtzu ij s'fatnw ufx fxxje i'fwljsy inxutsngqj utzw atdfljw ozxvz'à Ufwnx. Oj htruyfnx ozxyjrjsy xzw zsj fafshj ij Lfqqnrfwi utzw qj kfnwj. Rts rfwn utzwwfny r'fnijw rfnx oj sj qj ajzc ufx. Stzx sj xtrrjx ufx js ywèx gtsx yjwrjx jy oj anx à xjx hwthmjyx ijuznx ansly fsx"
+        langue = "Français"
+    elif demo_trLong:
+        donnees_crypter = "Ewjzsts twf Sda. Tmjskı twfae gvse. Gvsevs rsesf ywçajewqa çgc kwnwjae. Karw gvseı sfdslesc aklaqgjme. Gvseı csjvwşaedw hsqdsşıjıe. Vmnsjdsjıfıf jwfya esnavaj. Esna twfae wf kwnvağae jwfclaj. Çsdışes eskse hwfuwjwfaf qsfıfvsvıj. Kstsz mqsfıj mqsfesr hwfuwjwqa sçsjıe nw tajsr lwear zsns sdıjıe. Tadyaksqsjıe çsdışes eskseıf üklüfvwvaj. Csjvwşae tskcwltgd gqfsesqı çgc kwnwj. Tm qürvwf qslsğıfıf sdlıfvs taj tskcwltgd lghm nsjvıj. Vmnsjvs vs tskcwltgd gqmfumdsjıfıf jwkaedwja nsjvıj. Csjvwşae tadyaksqsj gqmfdsjıfı kwnewr ses twf çgc kwnwjae. Wf kwnvağae tadyaksqsj gqmfm sjsts qsjışıvıj. Övwndwjaea qshlıclsf kgfjs tajsr tadyaksqsj gqmfm gqfsj tajsr vs calsh gcmjme. Yüfüf tüqüc cıkeıfı gvsevs ywçajajae. Tm qürvwf gvseıf lwear nw vürwfda gdeskıfs çgc öfwe nwjajae. Fw vwjdwj tadajkafar: Skdsf qsllığı qwjvwf twdda gdmj."
+        langue = "Turc"
+    elif demo_enCourt:
+        donnees_crypter = "Ifmmp Xpsme! J'n Cpoe, Kbnft Cpoe."
+        langue = "Anglais"
+    elif fichier_chiffre:
+
+        ## On récupère le contenu du fichier et on le décode en UTF-8
+        donnees_crypter = fichier_chiffre.read().decode("utf-8")
 
     ## On affiche le contenu du fichier
     st.write("## Texte chiffré")
-    st.write(bytes_data.decode("utf-8"))
+    st.write(donnees_crypter)
 
     ## On affiche le texte déchiffré
     st.write("## Texte déchiffré")
-    st.write(break_cesar(bytes_data.decode("utf-8"), lang))
+    st.write(dechiffrer_cesar(donnees_crypter, langue))
 
     ## On affiche des informations sur le texte
     st.write("## Informations")
+    diff = abs(difference_caracteres(caractere_plus_frequent(analyse_frequence(donnees_crypter)), freq_lang[langue]))
+
+    ## On affiche la lettre la plus fréquente de la langue choisie
+    st.info(f"La lettre la plus fréquente en **{langue}** est **{freq_lang[langue].upper()}**")
+    st.info(f"Avec une clé de **{diff}**, la lettre **{freq_lang[langue].upper()}** devient **{caractere_plus_frequent(analyse_frequence(donnees_crypter)).upper()}** après chiffrement")
 
     ## On affiche la fréquence des lettres du texte chiffré et du texte déchiffré
     st.write("### Fréquence des lettres du texte chiffré")
-    st.bar_chart(freq_analyse(bytes_data.decode("utf-8")))
+    st.bar_chart(analyse_frequence(donnees_crypter))
     st.write("### Fréquence des lettres du texte déchiffré")
-    st.bar_chart(freq_analyse(break_cesar(bytes_data.decode("utf-8"), lang)))
+    st.bar_chart(analyse_frequence(dechiffrer_cesar(donnees_crypter, langue)))
 
     ## On affiche la clé de chiffrement (valeur estimée)
-    diff = abs(diff_char(max_char(freq_analyse(bytes_data.decode('utf-8'))), freq_lang[lang]))
     st.write(f"### Clé de chiffrement (valeur estimée) : {diff}")
     st.write(f"La clé de chiffrement est une valeur estimée étant donné que, dès que l'on atteint le chiffre 26, l'alphabet recommence. Ainsi, plusieurs clés de chiffrement peuvent être générées.")
-    st.write(f"D'autres clé de chiffrement sont possibles, telles que : **{diff+26}, {diff+52}, ...**")
+    st.write(f"D'autres clés de chiffrement sont possibles, telles que : **{diff+26}, {diff+52}, ...**")
     st.write(f'La valeur **{diff}** est la plus petite possible et représente le nombre de lettres à décaler pour chiffrer le texte.')
