@@ -279,6 +279,7 @@ try:
     else:
         ## Si aucun texte chiffré n'est sélectionné, on affiche un message d'erreur
         st.warning("Aucun texte chiffré n'a été sélectionné")
-except:
+except Exception as e:
     ## Si une erreur se produit, on affiche un message d'erreur
     st.error("Une erreur s'est produite")
+    st.error(e)
