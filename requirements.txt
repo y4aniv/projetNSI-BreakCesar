@@ -1,2 +1,2 @@
 streamlit
-st-cytoscape
+st_cytoscape
