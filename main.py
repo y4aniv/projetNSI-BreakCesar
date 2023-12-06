@@ -58,15 +58,7 @@ def pourcentage_frequence(freq):
     :sortie -> freq (dict)
     """
 
-    ## Initialisation de la somme des fréquences
-    total = 0
-
-    ## Parcours du dictionnaire de fréquence
-    for caractere in freq:
-
-        ## Ajout de la fréquence au total
-        total += freq[caractere]
-
+    total = sum(freq[caractere] for caractere in freq)
     ## Parcours du dictionnaire de fréquence
     for caractere in freq:
 
@@ -107,10 +99,7 @@ def difference_caracteres(caractere1, caractere2):
     ## On récupère la position du caractère caractere2 dans l'alphabet
     pos2 = ord(caractere2) - 97 ## 97 car 97 correspond à la lettre a en ASCII
 
-    ## On calcule la différence entre les deux positions
-    diff = pos2 - pos1
-
-    return diff
+    return pos2 - pos1
 
 def dechiffrer_cesar(texte, lang="Français"):
     """
@@ -226,6 +215,8 @@ if fichier_chiffre is not None or demo_frLong or demo_trLong or demo_enCourt or 
 
     ## On affiche la clé de chiffrement (valeur estimée)
     st.write(f"### Clé de chiffrement (valeur estimée) : {diff}")
-    st.write(f"La clé de chiffrement est une valeur estimée étant donné que, dès que l'on atteint le chiffre 26, l'alphabet recommence. Ainsi, plusieurs clés de chiffrement peuvent être générées.")
+    st.write(
+        "La clé de chiffrement est une valeur estimée étant donné que, dès que l'on atteint le chiffre 26, l'alphabet recommence. Ainsi, plusieurs clés de chiffrement peuvent être générées."
+    )
     st.write(f"D'autres clés de chiffrement sont possibles, telles que : **{diff+26}, {diff+52}, ...**")
     st.write(f'La valeur **{diff}** est la plus petite possible et représente le nombre de lettres à décaler pour chiffrer le texte.')
