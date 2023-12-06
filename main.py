@@ -237,37 +237,12 @@ try:
         ## Initialisation du dictionnaire contenant les éléments du graphique
         elements = []
 
-        ## Ajout des lettres de l'alphabet
         for i in range(26):
-            elements.append(
-                {
-                    "data": {
-                        "source": f"c{str(i)}",
-                        "target": f"c{str((i + diff) % 26)}",
-                    }
-                }
-            )
-
+            elements.append({"data": {"id": f"c{str(i)}", "label": chr(i + 97).upper()}})
         for i in range(26):
-            elements.append(
-                {
-                    "data": {
-                        "id": f"c{str(i)}",
-                        "label": chr(i + 97),
-                    }
-                }
-            )
-        
-        ## Relation entre les lettres du texte chiffré et les lettres du texte déchiffré en fonction de la clé de chiffrement
+            elements.append({"data": {"id": f"d{str(i)}", "label": chr(i + 97).upper()}})
         for i in range(26):
-            elements.append(
-                {
-                    "data": {
-                        "source": f"d{str(i)}",
-                        "target": f"d{str((i + diff) % 26)}",
-                    }
-                }
-            )
+            elements.append({"data": {"source": f"c{str(i)}", "target": f"d{str((i + diff) % 26)}"}})
 
         ## Ajout de styles
         stylesheet = [
