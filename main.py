@@ -47,7 +47,6 @@ def analyse_frequence(texte):
         else:
             freq[caractere] = 1
     ## On retourne le dictionnaire
-    print(freq)
     return freq
 
 def pourcentage_frequence(freq):
@@ -223,12 +222,6 @@ try:
         ## Informations de base
         st.info(f"La lettre la plus fréquente en **{langue}** est **{freq_lang[langue].upper()}**")
         st.info(f"Avec une clé de **{diff}**, la lettre **{freq_lang[langue].upper()}** devient **{caractere_plus_frequent(analyse_frequence(donnees_crypter)).upper()}** après chiffrement")
-
-        ## Affichage des graphiques
-        st.write("### Fréquence des lettres du texte chiffré")
-        st.bar_chart(analyse_frequence(donnees_crypter))
-        st.write("### Fréquence des lettres du texte déchiffré")
-        st.bar_chart(analyse_frequence(dechiffrer_cesar(donnees_crypter, langue)))
 
         ## Affichage de la clé de chiffrement
         st.write(f"### Clé de chiffrement (valeur estimée) : {diff}")
