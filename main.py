@@ -39,7 +39,6 @@ def analyse_frequence(texte):
         caractere = caractere.lower()
         ## Si le caractère n'est pas une lettre, on passe au suivant
         if not caractere.isalpha():
-            print(caractere)
             continue
         ## Si le caractère est déjà dans le dictionnaire, on incrémente sa valeur
         if caractere in freq:
@@ -48,6 +47,7 @@ def analyse_frequence(texte):
         else:
             freq[caractere] = 1
     ## On retourne le dictionnaire
+    print(freq)
     return freq
 
 def pourcentage_frequence(freq):
