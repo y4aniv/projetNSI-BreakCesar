@@ -1,7 +1,10 @@
 """
-Importation des modules.
-Streamlit est utilisé pour l'interface graphique et st_cytoscape pour la visualisation du chiffrement.
+BreakCesar - Déchiffrement automatique d'un code César
+Auteur : Yaniv & Océanely
+WebApp: https://breakcesar.streamlit.app/
 """
+
+#Importation des modules.
 import streamlit as st
 from st_cytoscape import cytoscape
 
@@ -165,6 +168,7 @@ try:
     ## Boutons de démonstration
     demo_frLong = st.sidebar.button("Test en Français [925 caractères] > Clé de chiffrement : 5")
     demo_trLong = st.sidebar.button("Test en Turc [710 caractères] > Clé de chiffrement : 18")
+    demo_sdLong = st.sidebar.button("Test en Suédois [22434 caractères] > Clé de chiffrement : 65")
     demo_enCourt = st.sidebar.button("Test en Anglais [29 caractères] > Clé de chiffrement : 1")
     demo_frAsLt = st.sidebar.button("Test d'un texte en Français déchiffré en Lituanien [925 caractères] > Clé de chiffrement : 5")
     st.sidebar.write("")
@@ -173,46 +177,44 @@ try:
     st.sidebar.write("# Testez votre propre texte")
     langue = st.sidebar.selectbox("Sélectionnez la langue du texte chiffré", list(freq_lang.keys()))
     fichier_chiffre = st.sidebar.file_uploader("Uploadez le fichier chiffré (.txt)", key=st.session_state['file_uploader_key'], type="txt")
-    st.sidebar.write("Supprimez le fichier stocké pour retourner à la démonstration")
-    del_storage = st.sidebar.button("Supprimer le fichier stocké")
 
     ## Si un bouton de démonstration est cliqué, on réinitialise les variables de session
-    if demo_frLong or demo_trLong or demo_enCourt or demo_frAsLt or fichier_chiffre:
-        reset_session("frLong" if demo_frLong else "trLong" if demo_trLong else "enCourt" if demo_enCourt else "frAsLt" if demo_frAsLt else "fichier")
-
-    ## Si le bouton de suppression du fichier stocké est cliqué, on réinitialise les variables de session et on supprime le fichier stocké en incrémentant la clé du file_uploader
-    if del_storage:
-        st.session_state["demoState"] = False
-        st.session_state["demoType"] = ""
-        st.session_state["file_uploader_key"] += 1
-        st.rerun()
+    if demo_frLong or demo_trLong or demo_enCourt or demo_frAsLt or fichier_chiffre or demo_sdLong:
+        reset_session("frLong" if demo_frLong else "trLong" if demo_trLong else "enCourt" if demo_enCourt else "frAsLt" if demo_frAsLt else "demo_sdLong" if demo_sdLong else "fichier")
+        if demo_frLong or demo_trLong or demo_enCourt or demo_frAsLt or demo_sdLong:
+            st.session_state["file_uploader_key"] += 1
+            st.rerun()
 
     ## Routage des différentes valeurs de demonstration
     if st.session_state.demoState:
         ## Si un texte par défaut est sélectionné, on récupère le texte et la langue
         if st.session_state.demoType == "frLong":
-            donnees_crypter = "Jqqj jsatnj qj rfszxhwny à Xnrtsj ij Gjfzatnw vzn xtzynjsy xf uzgqnhfynts fzc Éinyntsx Lfqqnrfwi. Zsj htwwjxutsifshj x'éyfgqny jsywj jqqjx à qf kns ijx fsséjx 1960. Jqqj qzn jcuwnrj fnsxn xjx jxuéwfshjx jy xjx fyyjsyjx anx-à-anx i'zsj uzgqnhfynts ufw Lfqqnrfwi, zsj rfnxts i'éinynts à qf stytwnéyé nsyjwsfyntsfqj : « Xn atzx xfanje hj vzj o'fyyjsix ij hjyyj uzgqnhfynts ! Qf wzuyzwj fajh zsj anj ij wtzynsj jy ij wéxnlsfynts, qf kznyj js ufdx éywfsljw, q'nsiéujsifshj ufw qj ywfafnq. Atzx atdje vz'nq sj x'flny ufx xnruqjrjsy utzw rtn i'zsj xnruqj vzjxynts ij afsnyé. Utzw tgyjsnw q'fzytwnxfynts ij xtwynj, nq stzx kfzy i'fgtwi zsj fzytwnxfynts rfwnyfqj, uznx zsj fzywj tkknhnjqqj. », éhwny-jqqj ifsx zs htzwwnjw ifyé iz 23 iéhjrgwj 196722. Uznx ifsx zs fzywj htzwwnjw, ifyé hjyyj ktnx iz 5 ofsanjw 1968, jqqj éhwny jshtwj : « Oj hwfnsx gjfzhtzu ij s'fatnw ufx fxxje i'fwljsy inxutsngqj utzw atdfljw ozxvz'à Ufwnx. Oj htruyfnx ozxyjrjsy xzw zsj fafshj ij Lfqqnrfwi utzw qj kfnwj. Rts rfwn utzwwfny r'fnijw rfnx oj sj qj ajzc ufx. Stzx sj xtrrjx ufx js ywèx gtsx yjwrjx jy oj anx à xjx hwthmjyx ijuznx ansly fsx"
+            donnees_crypter = open('./assets/frLong.txt', 'r').read()
             langue = "Français"
         elif st.session_state.demoType == "trLong":
-            donnees_crypter = "Ewjzsts twf Sda. Tmjskı twfae gvse. Gvsevs rsesf ywçajewqa çgc kwnwjae. Karw gvseı sfdslesc aklaqgjme. Gvseı csjvwşaedw hsqdsşıjıe. Vmnsjdsjıfıf jwfya esnavaj. Esna twfae wf kwnvağae jwfclaj. Çsdışes eskse hwfuwjwfaf qsfıfvsvıj. Kstsz mqsfıj mqsfesr hwfuwjwqa sçsjıe nw tajsr lwear zsns sdıjıe. Tadyaksqsjıe çsdışes eskseıf üklüfvwvaj. Csjvwşae tskcwltgd gqfsesqı çgc kwnwj. Tm qürvwf qslsğıfıf sdlıfvs taj tskcwltgd lghm nsjvıj. Vmnsjvs vs tskcwltgd gqmfumdsjıfıf jwkaedwja nsjvıj. Csjvwşae tadyaksqsj gqmfdsjıfı kwnewr ses twf çgc kwnwjae. Wf kwnvağae tadyaksqsj gqmfm sjsts qsjışıvıj. Övwndwjaea qshlıclsf kgfjs tajsr tadyaksqsj gqmfm gqfsj tajsr vs calsh gcmjme. Yüfüf tüqüc cıkeıfı gvsevs ywçajajae. Tm qürvwf gvseıf lwear nw vürwfda gdeskıfs çgc öfwe nwjajae. Fw vwjdwj tadajkafar: Skdsf qsllığı qwjvwf twdda gdmj."
+            donnees_crypter = open('./assets/trLong.txt', 'r').read()
             langue = "Turc"
         elif st.session_state.demoType == "enCourt":
-            donnees_crypter = "Ifmmp Xpsme! J'n Cpoe, Kbnft Cpoe."
+            donnees_crypter = open('./assets/enCourt.txt', 'r').read()
             langue = "Anglais"
         elif st.session_state.demoType == "frAsLt":
-            donnees_crypter = "Jqqj jsatnj qj rfszxhwny à Xnrtsj ij Gjfzatnw vzn xtzynjsy xf uzgqnhfynts fzc Éinyntsx Lfqqnrfwi. Zsj htwwjxutsifshj x'éyfgqny jsywj jqqjx à qf kns ijx fsséjx 1960. Jqqj qzn jcuwnrj fnsxn xjx jxuéwfshjx jy xjx fyyjsyjx anx-à-anx i'zsj uzgqnhfynts ufw Lfqqnrfwi, zsj rfnxts i'éinynts à qf stytwnéyé nsyjwsfyntsfqj : « Xn atzx xfanje hj vzj o'fyyjsix ij hjyyj uzgqnhfynts ! Qf wzuyzwj fajh zsj anj ij wtzynsj jy ij wéxnlsfynts, qf kznyj js ufdx éywfsljw, q'nsiéujsifshj ufw qj ywfafnq. Atzx atdje vz'nq sj x'flny ufx xnruqjrjsy utzw rtn i'zsj xnruqj vzjxynts ij afsnyé. Utzw tgyjsnw q'fzytwnxfynts ij xtwynj, nq stzx kfzy i'fgtwi zsj fzytwnxfynts rfwnyfqj, uznx zsj fzywj tkknhnjqqj. », éhwny-jqqj ifsx zs htzwwnjw ifyé iz 23 iéhjrgwj 196722. Uznx ifsx zs fzywj htzwwnjw, ifyé hjyyj ktnx iz 5 ofsanjw 1968, jqqj éhwny jshtwj : « Oj hwfnsx gjfzhtzu ij s'fatnw ufx fxxje i'fwljsy inxutsngqj utzw atdfljw ozxvz'à Ufwnx. Oj htruyfnx ozxyjrjsy xzw zsj fafshj ij Lfqqnrfwi utzw qj kfnwj. Rts rfwn utzwwfny r'fnijw rfnx oj sj qj ajzc ufx. Stzx sj xtrrjx ufx js ywèx gtsx yjwrjx jy oj anx à xjx hwthmjyx ijuznx ansly fsx"
+            donnees_crypter = open('./assets/frLong.txt', 'r').read()
             langue = "Lituanien"
+        elif st.session_state.demoType == "demo_sdLong":
+            donnees_crypter = open('./assets/sdLong.txt', 'r').read()
+            langue = "Suédois"
         ## Si un fichier est uploadé, on récupère le contenu du fichier 
         elif st.session_state.demoType == "fichier":
             donnees_crypter = fichier_chiffre.read().decode("utf-8")
-
         ## Affichage du texte chiffré
         st.write("## Texte chiffré")
-        st.write(donnees_crypter)
+        # Maximum de 1000 caractères pour éviter les problèmes de performances.
+        st.write(donnees_crypter[:1000] + (f"... **{len(donnees_crypter) - 1000} caractères restant**" if len(donnees_crypter) > 1000 else ""))
 
         ## Affichage du texte déchiffré
         st.write("## Texte déchiffré")
-        st.write(dechiffrer_cesar(donnees_crypter, langue))
+        # Maximum de 1000 caractères pour éviter les problèmes de performances.
+        st.write(dechiffrer_cesar(donnees_crypter, langue)[:1000] + (f"... **{len(donnees_crypter) - 1000} caractères restant**" if len(donnees_crypter) > 1000 else ""))
 
         ## Affichage des informations
         st.write("## Informations")
