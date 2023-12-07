@@ -7,6 +7,7 @@ WebApp: https://breakcesar.streamlit.app/
 #Importation des modules.
 import streamlit as st
 from st_cytoscape import cytoscape
+from langdetect import detect, DetectorFactory
 
 ## Dictionnaire des lettres les plus fréquentes dans chaque langue
 freq_lang = {
@@ -19,13 +20,12 @@ freq_lang = {
     "Turc": "a",
     "Suédois": "e",
     "Polonais": "a",
-    "Néerlandais": "e",
     "Danois": "e",
-    "Islandais": "a",
     "Finnois": "a",
     "Tchèque": "a",
     "Lituanien": "i"
 }
+
 
 def analyse_frequence(texte):
     """
@@ -143,6 +143,30 @@ def reset_session(type):
     st.session_state["demoState"] = True
     st.session_state["demoType"] = type
 
+def iso3166_to_lang(iso3166):
+    """
+    Convertit un code ISO 3166-1 en langue
+    -> iso3166 <str>
+    <- lang <str>
+    """
+    lang = {
+        "en": "Anglais",
+        "fr": "Français",
+        "de": "Allemand",
+        "es": "Espagnol",
+        "pt": "Portugais",
+        "it": "Italien",
+        "tr": "Turc",
+        "sv": "Suédois",
+        "pl": "Polonais",
+        "da": "Danois",
+        "fi": "Finnois",
+        "cs": "Tchèque",
+        "lt": "Lituanien"
+    }
+
+    return lang[iso3166]
+
 ## Configuration de la page
 st.set_page_config(page_title="BreakCesar", page_icon="🔓", layout="centered", initial_sidebar_state="auto")
 
@@ -206,6 +230,7 @@ try:
         ## Si un fichier est uploadé, on récupère le contenu du fichier 
         elif st.session_state.demoType == "fichier":
             donnees_crypter = fichier_chiffre.read().decode("utf-8")
+        
         ## Affichage du texte chiffré
         st.write("## Texte chiffré")
         # Maximum de 1000 caractères pour éviter les problèmes de performances.
@@ -220,6 +245,26 @@ try:
         st.write("## Informations")
         ## Calcul de la différence entre le caractère le plus fréquent et le caractère le plus fréquent dans la langue
         diff = abs(difference_caracteres(caractere_plus_frequent(analyse_frequence(donnees_crypter)), freq_lang[langue]))
+
+        founded = 0
+
+        wordlist = open(f'./assets/wordlists/{langue}.txt', 'r').read()
+        for word in dechiffrer_cesar(donnees_crypter, langue).split(" "):
+            if word in wordlist:
+                founded += 1
+        
+        score = founded / len(dechiffrer_cesar(donnees_crypter, langue).split(" "))
+
+        DetectorFactory.seed = 0
+        langue_detectee = iso3166_to_lang(detect(dechiffrer_cesar(donnees_crypter, langue)))
+
+        if(score > 0.5):
+            if(langue_detectee.lower() != langue.lower()):
+                st.warning(f"Le texte ne semble pas avoir été déchiffré avec succès... (score: {score} - Erreur dans la concordance de la langue)")
+            else:
+                st.success(f"Le texte à été déchiffré avec succès ! (score: {score})")
+        else:
+            st.warning(f"Le texte ne semble pas avoir été déchiffré avec succès... (score: {score})")
 
         ## Informations de base
         st.info(f"La lettre la plus fréquente en **{langue}** est **{freq_lang[langue].upper()}**")

@@ -1,2 +1,3 @@
+langdetect
 streamlit
 st-cytoscape
