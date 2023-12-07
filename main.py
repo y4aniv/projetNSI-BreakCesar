@@ -5,7 +5,7 @@ Streamlit est utilisé pour l'interface graphique et st_cytoscape pour la visual
 import streamlit as st
 from st_cytoscape import cytoscape
 
-## Dictionnaire des fréquences des lettres dans chaque langue
+## Dictionnaire des lettres les plus fréquentes dans chaque langue
 freq_lang = {
     "Anglais": "e",
     "Français": "e",
