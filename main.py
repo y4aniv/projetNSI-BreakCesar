@@ -37,9 +37,6 @@ def analyse_frequence(texte):
     for caractere in texte:
         ## Conversion en minuscule
         caractere = caractere.lower()
-        ## Si le caractère n'est pas une lettre, on passe au suivant
-        if not caractere.isalpha():
-            continue
         ## Si le caractère est déjà dans le dictionnaire, on incrémente sa valeur
         if caractere in freq:
             freq[caractere] += 1
