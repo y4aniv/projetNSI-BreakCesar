@@ -167,6 +167,7 @@ def initialisation_session():
 
 # On essaie d'exécuter le programme
 try:
+    
     # Interface graphique (WebApp)
 
     # Configuration de la WebApp et initialisation de la session
